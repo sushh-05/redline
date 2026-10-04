@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redline — Policy attack simulator</title>
+    <link rel="icon" href="data:," />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=2" />
   </head>
   <body>
     <header class="topbar">
@@ -30,7 +31,7 @@
           <p class="helper">Describe the limits in plain language. Include a daily limit and an approval threshold.</p>
           <label class="sr-only" for="policy-input">Your policy</label>
           <textarea id="policy-input" spellcheck="false">Set a daily limit of $100, approval above $5, and a rolling hour limit of $25.</textarea>
-          <div class="panel-footer"><span class="hint">Try: “approval above 25”</span><button class="button primary" id="run-button">Run attacks <span aria-hidden="true">↗</span></button></div>
+          <div class="panel-footer"><span class="hint">Try: “approval above 25”</span><button type="button" class="button primary" id="run-button">Run attacks <span aria-hidden="true">↗</span></button></div>
           <p class="error" id="policy-error" role="alert"></p>
         </div>
 
@@ -46,13 +47,13 @@
         <div class="patch-row">
           <label class="sr-only" for="patch-input">Your patch</label>
           <textarea id="patch-input" spellcheck="false" placeholder="Try: Set approval above $25 and keep the daily limit at $100."></textarea>
-          <button class="button secondary" id="patch-button">Apply patch <span aria-hidden="true">↗</span></button>
+          <button type="button" class="button secondary" id="patch-button">Apply patch <span aria-hidden="true">↗</span></button>
         </div>
         <p class="error" id="patch-error" role="alert"></p>
         <div class="diff-area empty" id="diff-area"><span class="diff-icon">＋</span><div><strong>No patch applied yet</strong><p>Your policy difference and changed attacks will appear here.</p></div></div>
       </section>
     </main>
     <footer><span>REDLINE / POLICY LAB</span><span>Built for safer autonomous spending</span></footer>
-    <script src="/script.js"></script>
+    <script src="/script.js?v=2"></script>
   </body>
 </html>

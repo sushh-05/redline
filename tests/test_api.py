@@ -65,6 +65,24 @@ def test_pass_leaves_rolling_hour_limit_optional() -> None:
     assert response.json()["rolling_hour_limit"] is None
 
 
+def test_pass_accepts_common_natural_policy_phrasing() -> None:
+    response = client.post(
+        "/pass",
+        json={
+            "sentence": (
+                "Allow spending up to $100 per day, require approval for purchases over $5, "
+                "and cap spending at $25 per hour."
+            )
+        },
+    )
+    assert response.status_code == 200
+    assert response.json() == {
+        "daily_limit": "100.00",
+        "approval_above": "5.00",
+        "rolling_hour_limit": "25.00",
+    }
+
+
 def test_pass_rejects_a_sentence_missing_required_limits() -> None:
     response = client.post("/pass", json={"sentence": "rolling hour limit 10"})
     assert response.status_code == 400
