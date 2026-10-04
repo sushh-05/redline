@@ -1,0 +1,32 @@
+[project]
+name = "redline"
+version = "0.1.0"
+description = "Simulator that tests AI agent spending policies before an agent gets money."
+authors = [
+    { name = "THADI SUSHMITHA MANI", email = "sushmithamanithadi@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.142.2",
+    "uvicorn>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+]
+
+[project.scripts]
+redline = "app.main:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

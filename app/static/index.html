@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redline — Policy attack simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Redline home"><span class="brand-mark">R</span><span>REDLINE</span></a>
+      <span class="header-note"><span class="status-dot"></span> deterministic policy testing</span>
+    </header>
+
+    <main class="shell">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">Policy attack simulator</p>
+          <h1>Find the line<br /><em>before</em> the spend.</h1>
+        </div>
+        <p class="intro-copy">Pressure-test an agent’s spending policy with repeatable attacks. See exactly what escapes, escalates, or gets stopped.</p>
+      </section>
+
+      <section class="workspace" aria-label="Policy testing workspace">
+        <div class="panel policy-panel">
+          <div class="panel-heading"><div><span class="step">01</span><h2>Speak Your Policy</h2></div><span class="live-label">POLICY INPUT</span></div>
+          <p class="helper">Describe the limits in plain language. Include a daily limit and an approval threshold.</p>
+          <label class="sr-only" for="policy-input">Your policy</label>
+          <textarea id="policy-input" spellcheck="false">Set a daily limit of $100, approval above $5, and a rolling hour limit of $25.</textarea>
+          <div class="panel-footer"><span class="hint">Try: “approval above 25”</span><button class="button primary" id="run-button">Run attacks <span aria-hidden="true">↗</span></button></div>
+          <p class="error" id="policy-error" role="alert"></p>
+        </div>
+
+        <div class="results-column">
+          <div class="results-heading"><div><p class="eyebrow">Attack surface</p><h2>What got through?</h2></div><span id="run-meta">Waiting for a run</span></div>
+          <div class="attack-grid" id="attack-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="panel patch-panel">
+        <div class="panel-heading"><div><span class="step">02</span><h2>Speak Your Patch</h2></div><span class="live-label">COMPARE CHANGES</span></div>
+        <p class="helper">Describe a new version of the policy. We’ll show the difference and re-run every attack.</p>
+        <div class="patch-row">
+          <label class="sr-only" for="patch-input">Your patch</label>
+          <textarea id="patch-input" spellcheck="false" placeholder="Try: Set approval above $25 and keep the daily limit at $100."></textarea>
+          <button class="button secondary" id="patch-button">Apply patch <span aria-hidden="true">↗</span></button>
+        </div>
+        <p class="error" id="patch-error" role="alert"></p>
+        <div class="diff-area empty" id="diff-area"><span class="diff-icon">＋</span><div><strong>No patch applied yet</strong><p>Your policy difference and changed attacks will appear here.</p></div></div>
+      </section>
+    </main>
+    <footer><span>REDLINE / POLICY LAB</span><span>Built for safer autonomous spending</span></footer>
+    <script src="/script.js"></script>
+  </body>
+</html>
