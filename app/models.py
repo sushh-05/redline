@@ -71,6 +71,14 @@ class RunResponse(BaseModel):
     attacks: list[AttackRunModel]
 
 
+class CustomAttackRequest(BaseModel):
+    policy: PolicyModel
+    name: str = Field(min_length=1, max_length=60)
+    amount: Money
+    count: int = Field(ge=1, le=100)
+    interval_minutes: int = Field(ge=0, le=1440)
+
+
 class PassRequest(BaseModel):
     sentence: str = Field(min_length=1)
 

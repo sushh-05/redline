@@ -15,6 +15,25 @@ uv run uvicorn app.main:app --reload
 
 Open http://127.0.0.1:8000 in a browser. The API is also available at `/evaluate`, `/run`, `/pass`, and `/patch`.
 
+The UI is a React app built with Vite. To work on the frontend with hot reload, run the API in one terminal and the frontend in another:
+
+```bash
+# terminal 1
+uv run uvicorn app.main:app --reload
+
+# terminal 2
+npm install
+npm run dev
+```
+
+For the production UI served directly by FastAPI, build the frontend:
+
+```bash
+npm run build
+```
+
+The build output is written to `app/static/`, which is served at `/`.
+
 If you already have the environment prepared, the short form is:
 
 ```bash
