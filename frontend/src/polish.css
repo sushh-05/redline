@@ -116,11 +116,12 @@ button:active:not(:disabled) { transform: translateY(0); }
 .ai-panel .step { background: var(--accent); color: #06211f; }
 .ai-panel textarea:disabled { opacity: .62; cursor: not-allowed; }
 .collapsible-panel { overflow: hidden; }
-.collapsible-summary { cursor: pointer; list-style: none; padding: 28px 30px; }
+.collapsible-summary { position: relative; cursor: pointer; list-style: none; padding: 28px 72px 28px 30px; }
 .collapsible-summary::-webkit-details-marker { display: none; }
-.collapsible-summary::after { content: "↓"; float: right; color: var(--accent); font-size: 1.15rem; transition: transform .2s ease; }
-.collapsible-panel[open] > .collapsible-summary::after { transform: rotate(180deg); }
-.collapsible-summary .panel-heading { margin: 0; }
+.collapsible-summary::after { content: "⌄"; position: absolute; right: 30px; top: 50%; color: var(--accent); font-size: 1.4rem; line-height: 1; transform: translateY(-58%); transition: transform .2s ease; }
+.collapsible-panel[open] > .collapsible-summary::after { transform: translateY(-42%) rotate(180deg); }
+.collapsible-summary .panel-heading { width: 100%; margin: 0; align-items: center; }
+.collapsible-summary .live-label { padding-top: 0; padding-right: 34px; }
 .collapsible-content { padding: 0 30px 30px; animation: reveal-panel .22s ease both; }
 .history-actions { display: flex; justify-content: flex-end; margin: -4px 0 12px; }
 @keyframes reveal-panel { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
@@ -144,7 +145,8 @@ body.dark .primary-button, body.dark .run-button { color: #06211f; }
   .intro-copy { margin-top: 24px; }
   .policy-panel { margin-bottom: 24px; }
   .policy-panel, .results-panel { padding: 22px; }
-  .collapsible-summary { padding: 22px; }
+  .collapsible-summary { padding: 22px 60px 22px 22px; }
+  .collapsible-summary::after { right: 22px; }
   .collapsible-content { padding: 0 22px 22px; }
   .attack-grid { grid-template-columns: 1fr; }
 }
