@@ -1,0 +1,2 @@
+.scenario-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 15px;color:var(--muted);font-size:11px}.scenario-row button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:2px;padding:6px 8px;font-size:10px;cursor:pointer}.scenario-row button:hover{border-color:var(--teal);color:var(--teal)}
+.attack-search{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:2px;padding:6px 8px;width:130px;font-size:10px;outline:none}.attack-search:focus{border-color:var(--teal)}

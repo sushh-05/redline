@@ -13,7 +13,34 @@ uv sync
 uv run uvicorn app.main:app --reload
 ```
 
-Open http://127.0.0.1:8000 in a browser. The API is also available at `/evaluate`, `/run`, `/pass`, and `/patch`.
+Open http://127.0.0.1:8000 in a browser. The API is also available at `/evaluate`, `/run`, `/pass`, `/patch`, `/custom-run`, `/simulate`, `/adaptive-run`, and `/multi-agent-run`.
+
+The React UI includes policy presets, risk scoring, recommendations, attack filters, expandable payment timelines, workspace-scoped local run history, JSON and print/PDF reports, shareable policy links, a custom attack builder, a scenario library, a seeded stress test for 100 randomized payment patterns, adaptive-attacker mode, shared-budget multi-agent testing, allowed-recipient rules, time windows, and per-recipient daily caps. GitHub Actions runs the backend tests and React production build on pushes and pull requests.
+
+### Optional AI copilot
+
+The **Ask the policy copilot** panel is optional. AI explains attack results and suggests patches; the deterministic policy engine remains the decision source.
+
+Recommended hosted option: Gemini Developer API. Set the key on the backend only:
+
+```powershell
+$env:GEMINI_API_KEY = "your-key"
+uv run uvicorn app.main:app --reload
+```
+
+Use the exact variable spelling `GEMINI_API_KEY`. The loader also accepts the existing `GEMINI_API_key` spelling for convenience. Groq is the only fallback provider and uses `GROQ_API_KEY`. If neither provider is available, Redline returns a clear `503` response; it does not silently switch providers. The frontend never receives an API key.
+
+### Use Redline as a spending guard for any AI agent
+
+Redline exposes `POST /guard` as a provider-neutral REST/OpenAPI tool. Before a payment tool executes a transaction, any agent—ChatGPT, Claude, Gemini, Groq, or your own application—sends the proposed amount, recipient, time, policy, and recent history to `/guard`.
+
+The response is explicit:
+
+- `allow` / `approved: true` — the payment tool may continue.
+- `review` / `requires_confirmation: true` — ask the user for confirmation first.
+- `block` / `approved: false` — do not execute the payment.
+
+For ChatGPT Actions, Claude tool use, Gemini function calling, Groq tool use, or a custom agent, deploy Redline to an HTTPS URL and import its `/openapi.json` or define the same JSON schema in the provider’s tool configuration. Add an instruction such as: “Always call `/guard` before any spending action. Never execute a payment after `block`. Ask for confirmation after `review`.” A local `127.0.0.1` server is not reachable by hosted agents until it is exposed through a secure HTTPS tunnel or deployed to a server.
 
 The UI is a React app built with Vite. To work on the frontend with hot reload, run the API in one terminal and the frontend in another:
 

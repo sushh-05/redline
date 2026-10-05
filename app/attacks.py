@@ -31,6 +31,7 @@ class AttackResult:
     explanation: str
     evaluations: tuple[Evaluation, ...]
     allowed_total: Decimal
+    payments: tuple[Transaction, ...]
 
 
 def split_second(start: datetime) -> Attack:
@@ -85,6 +86,7 @@ def run_attack(policy: Policy, attack: Attack) -> AttackResult:
         explanation=_explanation(attack, outcome, allowed_total),
         evaluations=tuple(evaluations),
         allowed_total=allowed_total,
+        payments=attack.payments,
     )
 
 

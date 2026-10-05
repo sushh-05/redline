@@ -131,3 +131,26 @@ def test_decision_source_is_deterministic() -> None:
     lowered = source.lower()
     for token in forbidden:
         assert token not in lowered
+
+
+def test_allowed_recipients_block_unknown_recipients() -> None:
+    policy = Policy(Decimal("100"), Decimal("50"), allowed_recipients=frozenset({"approved"}))
+    result = evaluate(policy, Transaction(Decimal("1"), "unknown", NOW), [])
+    assert result.status == "block"
+    assert "recipient_not_allowed" in result.reasons
+
+
+def test_allowed_hours_block_transactions_outside_window() -> None:
+    policy = Policy(Decimal("100"), Decimal("50"), allowed_start_hour=9, allowed_end_hour=17)
+    result = evaluate(policy, Transaction(Decimal("1"), "merchant", NOW.replace(hour=18)), [])
+    assert result.status == "block"
+    assert "outside_allowed_hours" in result.reasons
+
+
+def test_per_recipient_limit_is_separate_from_daily_limit() -> None:
+    policy = Policy(Decimal("100"), Decimal("50"), per_recipient_daily_limit=Decimal("5"))
+    first = Transaction(Decimal("4"), "merchant", NOW)
+    second = Transaction(Decimal("2"), "merchant", NOW + timedelta(hours=1))
+    result = evaluate(policy, second, [first])
+    assert result.status == "block"
+    assert "recipient_daily_limit_exceeded" in result.reasons

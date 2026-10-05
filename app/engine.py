@@ -18,6 +18,9 @@ Status = Literal["allow", "review", "block"]
 DAILY_LIMIT_EXCEEDED = "daily_limit_exceeded"
 ROLLING_HOUR_LIMIT_EXCEEDED = "rolling_hour_limit_exceeded"
 AMOUNT_ABOVE_APPROVAL = "amount_above_approval"
+RECIPIENT_NOT_ALLOWED = "recipient_not_allowed"
+OUTSIDE_ALLOWED_HOURS = "outside_allowed_hours"
+RECIPIENT_DAILY_LIMIT_EXCEEDED = "recipient_daily_limit_exceeded"
 
 
 @dataclass(frozen=True)
@@ -25,6 +28,10 @@ class Policy:
     daily_limit: Decimal
     approval_above: Decimal
     rolling_hour_limit: Decimal | None = None
+    allowed_recipients: frozenset[str] | None = None
+    allowed_start_hour: int | None = None
+    allowed_end_hour: int | None = None
+    per_recipient_daily_limit: Decimal | None = None
 
 
 @dataclass(frozen=True)
@@ -69,6 +76,14 @@ def evaluate(
     amount = as_money(transaction.amount)
     reasons: list[str] = []
 
+    if policy.allowed_recipients is not None and transaction.recipient not in policy.allowed_recipients:
+        reasons.append(RECIPIENT_NOT_ALLOWED)
+
+    if policy.allowed_start_hour is not None and policy.allowed_end_hour is not None:
+        hour = transaction.time.hour
+        if not policy.allowed_start_hour <= hour < policy.allowed_end_hour:
+            reasons.append(OUTSIDE_ALLOWED_HOURS)
+
     daily_history = [
         item
         for item in history
@@ -77,6 +92,12 @@ def evaluate(
     daily_total = as_money(_total(daily_history) + amount)
     if daily_total > as_money(policy.daily_limit):
         reasons.append(DAILY_LIMIT_EXCEEDED)
+
+    if policy.per_recipient_daily_limit is not None:
+        recipient_history = [item for item in daily_history if item.recipient == transaction.recipient]
+        recipient_total = as_money(_total(recipient_history) + amount)
+        if recipient_total > as_money(policy.per_recipient_daily_limit):
+            reasons.append(RECIPIENT_DAILY_LIMIT_EXCEEDED)
 
     if policy.rolling_hour_limit is not None:
         hour_history = [
@@ -91,7 +112,15 @@ def evaluate(
     if amount > as_money(policy.approval_above):
         reasons.append(AMOUNT_ABOVE_APPROVAL)
 
-    if DAILY_LIMIT_EXCEEDED in reasons:
+    if any(
+        reason in reasons
+        for reason in (
+            DAILY_LIMIT_EXCEEDED,
+            RECIPIENT_NOT_ALLOWED,
+            OUTSIDE_ALLOWED_HOURS,
+            RECIPIENT_DAILY_LIMIT_EXCEEDED,
+        )
+    ):
         status: Status = "block"
     elif reasons:
         status = "review"
