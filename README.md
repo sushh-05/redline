@@ -8,6 +8,14 @@ It is a simulator, not a wallet. Redline does not hold funds, connect to a bank,
 
 Try Redline online: [redline-pbv.vercel.app](https://redline-pbv.vercel.app/)
 
+## Build proof
+
+Redline was built with Wispr Flow. Watch the demo and build walkthrough:
+
+[![Redline demo](https://img.youtube.com/vi/_hWatdY0rw0/hqdefault.jpg)](https://youtu.be/_hWatdY0rw0)
+
+[Watch the Redline demo on YouTube](https://youtu.be/_hWatdY0rw0)
+
 ## Run it locally
 
 Install [uv](https://docs.astral.sh/uv/) if it is not already installed, then from the project directory run:
