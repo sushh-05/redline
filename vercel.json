@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "app/static",
   "routes": [
     {
       "src": "/(.*)",
