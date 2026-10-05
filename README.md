@@ -4,6 +4,10 @@ Redline is a deterministic simulator for testing AI-agent spending policies befo
 
 It is a simulator, not a wallet. Redline does not hold funds, connect to a bank, authorize payments, or move money. It evaluates fixed payment scenarios against a policy and reports whether the scenario is safe, escalated, blocked, or escaped.
 
+## Live demo
+
+Try Redline online: [redline-pbv.vercel.app](https://redline-pbv.vercel.app/)
+
 ## Run it locally
 
 Install [uv](https://docs.astral.sh/uv/) if it is not already installed, then from the project directory run:
